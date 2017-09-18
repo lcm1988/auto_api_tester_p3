@@ -15,6 +15,9 @@ class case_device(unittest.TestCase):
         #定义请求头
         self.headers= basedata.nt_headers.copy()
 
+    def tearDown(self):
+        pass
+
     @decorator
     def test_iphone_restart1(self):
         '''程序后台唤起1'''
