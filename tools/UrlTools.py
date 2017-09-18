@@ -3,7 +3,7 @@
 from json import dumps
 from urllib.parse import quote,unquote,urlencode
 
-class urltools:
+class UrlTools():
     def __init__(self):
         pass
 
@@ -28,5 +28,5 @@ class urltools:
         return urlencode(request_para)
 
 if __name__=="__main__":
-    print(urltools().url_quote({'a':'中国','b':'music'}))
-    print(urltools().url_unquote('a=%E4%B8%AD%E5%9B%BD&b=music'))
+    print(UrlTools().url_quote({'a':'中国','b':'music'}))
+    print(UrlTools().url_unquote('a=%E4%B8%AD%E5%9B%BD&b=music'))

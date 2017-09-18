@@ -5,19 +5,19 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from conf.config import RECIEVER_LIST,SMTP_SERVER,EMAIL_NAME,EMAIL_PWD
 
-class resultcollector():
+class ResultCollector():
     def __init__(self,fpath):
         self.fpath=fpath
 
     #追加写入log
-    def writelog(self,content):
+    def write_log(self,content):
         f=open(self.fpath,'a')
         f.writelines(content)
         f.writelines('\n')
         f.close()
 
     #发送邮件
-    def sendlog(self,fhtml=''):
+    def send_log(self,fhtml=''):
         #收件人
         self.receiver = RECIEVER_LIST
         #发件服务器
@@ -58,7 +58,7 @@ class resultcollector():
         smtp.quit()
 
 if __name__=="__main__":
-    l=resultcollector(r'f:\newlog.txt')
+    l=ResultCollector(r'f:\newlog.txt')
     for i in range(0,10):
-        l.writelog(str(i)+'测试结果\n')
-    l.sendlog()
+        l.write_log(str(i)+'测试结果\n')
+    l.send_log()

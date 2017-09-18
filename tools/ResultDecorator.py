@@ -1,7 +1,7 @@
 #!/usr/bin/python3.5
 #coding:utf-8
 from conf.config import CMP_FRAME_ONLY
-from tools.json_compare import jsoncompare
+from tools.JsonCompare import JsonCompare
 
 def decorator(fun):
     def test(*args,**kwargs):
@@ -9,7 +9,7 @@ def decorator(fun):
         if kwargs.get('func_data',False)==True:return fun(*args)
         print("%s RESULT OF \"%s\" %s"%("#"*10,comment,"#"*10))
         a,b= fun(*args)
-        res=jsoncompare(a,b)
+        res=JsonCompare(a,b)
         if res.frame_cmpare_result or res.data_compare_result:
             assert len(res.frame_cmpare_result)==0
             if not CMP_FRAME_ONLY:

@@ -3,7 +3,7 @@
 import redis
 import conf.config as config
 
-class redisconnector():
+class RedisConnector():
     def __init__(self,rds_conf):
         conf=getattr(config,rds_conf)
         self.__rds=redis.Redis(connection_pool=redis.ConnectionPool(host=conf['HOST'],port=conf['PORT'],password=conf['AUTH'],))
@@ -14,5 +14,5 @@ class redisconnector():
 
 
 if __name__=="__main__":
-    a= redisconnector('RDS_QA')
+    a= RedisConnector('RDS_QA')
     print(a.rds.hgetall('video:info:12545'))

@@ -4,7 +4,7 @@ import urllib3,gzip,io
 from urllib.parse import urlencode
 from conf.config import USE_PROXY,PROXY_HOST,PROXY_PORT
 
-class httpconnector():
+class HttpConnector():
     def __init__(self):
         if USE_PROXY:
             proxy_url='http://%s:%d/'%(PROXY_HOST,PROXY_PORT)
@@ -56,6 +56,6 @@ if __name__=="__main__":
         ('thumb',('face',open('/home/lcm/111.jpeg','rb').read(),))
     ]
     url='http://toffee.app.test.tvfanqie.com/iphone/user/savethumb?'+urlencode(para)
-    #res = httpconnector().conn(url,'GET', head)
-    res = httpconnector().file_poster(url,fields,head)
+    #res = HttpConnector().conn(url,'GET', head)
+    res = HttpConnector().file_poster(url,fields,head)
     print(res)

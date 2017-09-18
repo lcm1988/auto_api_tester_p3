@@ -3,7 +3,7 @@
 import xmltodict as xd
 import json
 
-class xmltransfer():
+class XmlTransfer():
     def __init__(self):
         pass
 
@@ -30,7 +30,7 @@ class xmltransfer():
 
 if __name__=="__main__":
     test_str="<student><info><mail>xxx@xxx.com</mail><name>name</name><sex>male</sex></info><course><score>90</score><name>math</name></course><course><score>88</score><name>english</name></course><stid>10213</stid></student>"
-    a= xmltransfer().xml_to_dict(test_str)
+    a= XmlTransfer().xml_to_dict(test_str)
     print(a)
-    b=xmltransfer().dict_to_xml(a)
+    b=XmlTransfer().dict_to_xml(a)
     print(b)

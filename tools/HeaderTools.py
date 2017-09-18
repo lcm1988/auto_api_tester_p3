@@ -1,10 +1,10 @@
 #!/usr/bin/python3.5
 #coding:utf-8
-class headertools():
+class HeaderTools():
     def __init__(self):
         pass
     #将dict形式的header存放在缓存文件并返回文件路径，用以解决频繁调用登录方法时触发鉴权限制问题
-    def saveHeader(self,header,fpath=r'./cache'):
+    def save_header(self,header,fpath=r'./cache'):
         try:
             fp=open(fpath,'w')
             for key,value in header.items():
@@ -15,7 +15,7 @@ class headertools():
             print(e)
 
     #文件读取rawheader自动滤掉行末换行符、空行并转换成dict格式的header
-    def loadHeader(self,fpath=r'./cache'):
+    def load_header(self,fpath=r'./cache'):
         f=open(fpath)
         headers={}
         for line in f:

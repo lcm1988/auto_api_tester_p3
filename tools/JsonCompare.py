@@ -3,7 +3,7 @@
 from conf.config import IS_DEBUG
 
 #数据对比，根据数据结构递归对比
-class jsoncompare():
+class JsonCompare():
     def __init__(self,expect_data,real_data,is_debug=IS_DEBUG):
         self.expect_data=expect_data
         self.real_data=real_data
@@ -59,7 +59,7 @@ class jsoncompare():
 if __name__=="__main__":
     a={'a':[{"namelist":['a',1]},[1,2,3],{'age':3},{'age1':3},[1]]}
     b = {'a': [{"namelist": ['a1', 1]}, [1, 2, 3], {'age': 3}, {'age1': 3}, [1]]}
-    res= jsoncompare(a,b)
+    res= JsonCompare(a,b)
     #print('数据比对结果：')
     #for i in res.data_compare_result:print(i)
     #print '结构比对结果：'
