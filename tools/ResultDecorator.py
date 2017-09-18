@@ -7,7 +7,7 @@ def decorator(fun):
     def test(*args,**kwargs):
         comment=fun.__doc__ if fun.__doc__ else fun.__name__
         if kwargs.get('func_data',False)==True:return fun(*args)
-        print("%s RESULT OF \"%s\" %s"%("#"*10,comment,"#"*10))
+        print('%s RESULT OF "%s" %s'%('#'*10,comment,'#'*10))
         a,b= fun(*args)
         res=JsonCompare(a,b)
         if res.frame_cmpare_result or res.data_compare_result:

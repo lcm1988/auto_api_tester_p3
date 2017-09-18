@@ -20,7 +20,7 @@ class XmlTransfer():
     #定义字典转换xml方法
     def dict_to_xml(self,dict_data={}):
         try:
-            if len(dict_data.keys())==1:
+            if len(dict_data.items())==1:
                 return xd.unparse(dict_data)
             else:
                 raise ValueError('wrong frame of dict')

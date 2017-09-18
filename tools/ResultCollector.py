@@ -46,7 +46,7 @@ class ResultCollector():
             msg.attach(att3)
 
         #构造剩余数据
-        msg['Subject'] = u'TEST LOG'
+        msg['Subject'] = 'TEST LOG'
         msg['From'] = self.name
         msg['To'] = ";".join(self.receiver)
 
