@@ -52,10 +52,10 @@ if __name__=="__main__":
 
     fields=[
         ('ch','gw'),
-        ('crumb','12313'),
-        ('thumb',('face',open('/home/lcm/111.jpeg','rb').read(),))
+        ('crumb','7daae8'),
+        ('fquc','bmlja25hbWU9JUU1JTg4JTk4JUU3JUE2JThGJUU1JThBJUE5JnNpZ249NThhNmEzMTk0ZjJhYTQyNjNjZjliMmM1YWY1YjliYzZ4aWFua2FudWN1aWQ9MjAwMDAwMDIyMjEmbG9naW5fdGltZT0xNTA1NzI0MzY4JnRodW1iPTFfdDAwZGY1NTFhNTgzYTg3ZjRlOSY='),
+        ('thumb',('111.png',open('e:\\111.png','rb').read(),))
     ]
     url='http://toffee.app.test.tvfanqie.com/iphone/user/savethumb?'+urlencode(para)
-    #res = HttpConnector().conn(url,'GET', head)
     res = HttpConnector().file_poster(url,fields,head)
     print(res)
