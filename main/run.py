@@ -58,6 +58,7 @@ else:
     #print(suit_list)#<cases.case_modle.case.case_device testMethod=test_iphone_restart1>
     suits= unittest.TestSuite(suit_list)
 
+#HTMLTestRunner调用方式，直接生成静态html报告
 log_path=path.replace('main','log')
 filename=log_path+r"/test_%d.html"%int(time.time())
 fp=open(filename,'wb')
@@ -65,4 +66,20 @@ runner=HTMLTestRunner.HTMLTestRunner(stream=fp,title=u'自动化测试报告',de
 runner.run(suits)
 fp.close()
 
-#发送结果邮件，代码后续补充
+#unittest调用方式，直接控制台打印
+#result=unittest.TextTestRunner(verbosity=2).run(suits)
+
+#自定义接口测试数据统计，方便入库保存
+#from tools.MyTestRunner import MyTestRunner
+#result=MyTestRunner(verbosity=2).run(suits)
+#case_detail=[]
+#for i in result:#每个文件一个list
+#    for s in i:#每个case一个list
+#        #print(s)
+#        res='faild' if s[0] else 'pass' #测试结果
+#        func=s[1] #方法
+#        apimsg=s[2] #case内置输出
+#        errmsg=s[3] #异常信息
+#        print(apimsg.split('\n')[2]) #请求耗时
+
+
