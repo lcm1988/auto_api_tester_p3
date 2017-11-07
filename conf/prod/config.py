@@ -9,8 +9,8 @@ IS_DEBUG=True
 
 #case运行范围配置
 RUN_ALL_CASE=False#该配置项为false时RUN_MODULES，RUN_CLASSES，RUN_CASES生效
-RUN_MODULES=['case_modle1','case_modle2']
-RUN_CLASSES=['case_device1','case_device2']
+RUN_MODULES=['case_modle']
+RUN_CLASSES=['case_device']
 RUN_CASES=['test_iphone_restart1','test_iphone_restart2']
 
 #代理配置

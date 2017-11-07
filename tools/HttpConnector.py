@@ -5,8 +5,8 @@ from urllib.parse import urlencode
 from conf.config import USE_PROXY,PROXY_HOST,PROXY_PORT
 
 class HttpConnector():
-    def __init__(self):
-        if USE_PROXY:
+    def __init__(self,proxy=USE_PROXY):
+        if proxy:
             proxy_url='http://%s:%d/'%(PROXY_HOST,PROXY_PORT)
             self.h=urllib3.ProxyManager(proxy_url)
         else:
@@ -14,6 +14,7 @@ class HttpConnector():
 
     #通过代理访问指定请求并返回请求结果
     def conn(self,url='',method='GET',body='',header={}):
+        res=False
         if method.upper()=='GET':
             res=self.h.request(method='GET',url=url,headers=header)
         elif method.upper()=='POST':

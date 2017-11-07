@@ -1,9 +1,9 @@
 # auto_api_tester_p3
 用例规范：
     1，用例均放置在cases目录下，不放与用例无关的文件
-    2，用例包均为以“case_”开头，后缀用例名称的package包；
-    3，package包内存放单一用例脚本，名称为case.py；
-    4，case.py中的类均以“case_”开头，后缀用例名称；
+    2，cases下为项目目录，均为以“case_”开头、后缀用例名称的package包；
+    3，项目目录内存放多个用例脚本，名称为case*.py；
+    4，case*.py中的类均以“case_”开头，后缀用例名称；
     5，类中须包含setUp和tearDown方法，以保证各个case执行的完整性
     6，用例方法均以“test_”开头，后缀方法名称；
     7，涉及数据共享或基础数据准备的，可以在cases目录或各case的包内增加数据文件；
