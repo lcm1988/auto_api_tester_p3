@@ -1,25 +1,26 @@
 #!/usr/bin/python3.5
 #coding:utf-8
-from conf.config import CMP_FRAME_ONLY
 from tools.JsonCompare import JsonCompare
 
-def decorator(fun):
-    def test(*args,**kwargs):
-        comment=fun.__doc__ if fun.__doc__ else fun.__name__
-        if kwargs.get('func_data',False)==True:return fun(*args)
-        print('%s RESULT OF "%s" %s'%('#'*10,comment,'#'*10))
-        a,b= fun(*args)
-        res=JsonCompare(a,b)
-        if res.frame_cmpare_result or res.data_compare_result:
-            assert len(res.frame_cmpare_result)==0
-            if not CMP_FRAME_ONLY:
-                assert len(res.data_compare_result)==0
-        else:
+def decorator(SmokeTest):
+    def getfunc(fun):
+        def runtest(*args,**kwargs):
+            comment=fun.__doc__ if fun.__doc__ else fun.__name__
+            if kwargs.get('func_data',False)==True:return fun(*args)
+            print('%s RESULT OF "%s" %s'%('#'*10,comment,'#'*10))
+            a,b= fun(*args)
+            res=JsonCompare(a,b)
+            if SmokeTest:
+                print('执行冒烟测试。。。')
+                assert len(res.frame_cmpare_result)==0
+            else:
+                print('执行全数据比对。。。')
+                assert len(res.frame_cmpare_result)==len(res.data_compare_result)==0
             print('对比成功')
+        return runtest
+    return getfunc
 
-    return test
-
-@decorator
+@decorator(1)
 def myfunc():
     return 1,1
 

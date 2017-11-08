@@ -2,9 +2,11 @@
 from json import loads
 from urllib.parse import urlencode
 from tools.HttpConnector import HttpConnector
+from tools.Conf import Conf
 
 class APItest():
-    def __init__(self):
+    def __init__(self,proxy=''):
+        self.__proxy=proxy
         self.__protocol='http'
         self.__method='GET'
         self.__domain=''
@@ -70,12 +72,21 @@ class APItest():
 
     #执行测试
     def run(self):
+        req=HttpConnector()
+        #检测代理配置
+        use_proxy=Conf().get_conf('config.USE_PROXY')
+        if use_proxy:
+            proxy_url=Conf().get_conf('config.PROXY_URL')
+            if not self.__proxy:
+                #优先使用本类的代理配置
+                proxy_url=self.__proxy
+            req=HttpConnector(proxy_url)
         try:
             url=self.__makeUrl()
             if self.__body:
-                res=HttpConnector().conn(url=url,method=self.__method,body=self.__body,header=self.__header)
+                res=req.conn(url=url,method=self.__method,body=self.__body,header=self.__header)
             else:
-                res=HttpConnector().conn(url=url,method=self.__method,header=self.__header)
+                res=req.conn(url=url,method=self.__method,header=self.__header)
             res=loads(res)
             return res
         except Exception as e:

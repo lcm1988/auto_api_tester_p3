@@ -15,8 +15,7 @@ RUN_CASES=['test_iphone_restart1','test_iphone_restart2']
 
 #代理配置
 USE_PROXY=True
-PROXY_HOST='192.168.52.1'
-PROXY_PORT=8888
+PROXY_URL='http://192.168.52.1:8888/'
 
 #邮箱配置
 RECIEVER_LIST= ['516315002@qq.com','*****@163.com']

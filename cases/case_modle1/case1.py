@@ -19,7 +19,7 @@ class case_device1(unittest.TestCase):
         self.end_time=time.time()
         print('@耗时%d'%int((self.end_time-self.start_time)*1000))
 
-    @decorator
+    @decorator(SmokeTest=False)
     def test_iphone_restart1(self):
         '''@NTAPI-程序后台唤起1'''
         para=self.commonpara.copy()
@@ -36,7 +36,7 @@ class case_device1(unittest.TestCase):
         }
         return expect_json,request.run()
 
-    @decorator
+    @decorator(SmokeTest=False)
     def test_iphone_restart2(self):
         '''@NTAPI-程序后台唤起2'''
         b=self.test_iphone_restart1(func_data=True)[1]

@@ -15,8 +15,7 @@ RUN_CASES=['test_iphone_restart1','test_iphone_restart2']
 
 #代理配置
 USE_PROXY=True
-PROXY_HOST='192.168.52.1'
-PROXY_PORT=8888
+PROXY_URL='http://192.168.52.1:8888/'
 
 #邮箱配置
 RECIEVER_LIST= ['516315002@qq.com','*****@163.com']
@@ -29,7 +28,7 @@ EMAIL_PWD='******'
 
 #缓存配置
 RDS_QA={
-    'HOST':'11.212.41.211',
+    'HOST':'11.212.4.211',
     'PORT':6342,
     'AUTH':'0fd24ec8238c1c2f'
 }
@@ -56,4 +55,7 @@ MSG_HEADER={
     'Host': 'toffeemsg.app.test.tvfanqie.com',
     'Connection': 'Keep-Alive',
     'User-Agent': '360 Video App/2.1.0 Android/5.1 QIHU'
+}
+VIDEO_HEADER={
+    'Host': 'qa.huajiao.service.video.com'
 }
