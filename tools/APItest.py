@@ -5,8 +5,8 @@ from tools.HttpConnector import HttpConnector
 from tools.Conf import Conf
 
 class APItest():
-    def __init__(self,proxy=''):
-        self.__proxy=proxy
+    def __init__(self,proxy_url=''):
+        self.__proxy=proxy_url
         self.__protocol='http'
         self.__method='GET'
         self.__domain=''
@@ -74,13 +74,9 @@ class APItest():
     def run(self):
         req=HttpConnector()
         #检测代理配置
-        use_proxy=Conf().get_conf('config.USE_PROXY')
-        if use_proxy:
-            proxy_url=Conf().get_conf('config.PROXY_URL')
-            if not self.__proxy:
-                #优先使用本类的代理配置
-                proxy_url=self.__proxy
-            req=HttpConnector(proxy_url)
+        proxy=self.__proxy if self.__proxy else Conf().get_conf('config.PROXY_URL')
+        if proxy:
+            req=HttpConnector(proxy)
         try:
             url=self.__makeUrl()
             if self.__body:

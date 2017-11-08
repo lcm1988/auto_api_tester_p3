@@ -14,7 +14,6 @@ RUN_CLASSES=['case_device1','case_device2']
 RUN_CASES=['test_iphone_restart1','test_iphone_restart2']
 
 #代理配置
-USE_PROXY=True
 PROXY_URL='http://192.168.52.1:8888/'
 
 #邮箱配置

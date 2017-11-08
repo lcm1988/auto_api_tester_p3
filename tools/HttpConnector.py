@@ -2,13 +2,13 @@
 #coding:utf-8
 import urllib3,gzip,io
 from urllib.parse import urlencode
-from conf.config import USE_PROXY,PROXY_HOST,PROXY_PORT
+from tools.Conf import Conf
 
 class HttpConnector():
-    def __init__(self,proxy=USE_PROXY):
+    def __init__(self,proxy_url=''):
+        proxy=proxy_url if proxy_url else Conf().get_conf('config.PROXY_URL')
         if proxy:
-            proxy_url='http://%s:%d/'%(PROXY_HOST,PROXY_PORT)
-            self.h=urllib3.ProxyManager(proxy_url)
+            self.h=urllib3.ProxyManager(proxy)
         else:
             self.h=urllib3.PoolManager()
 
