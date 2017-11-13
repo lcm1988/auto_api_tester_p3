@@ -25,7 +25,7 @@ class case_device2(unittest.TestCase):
     def test_iphone_restart1(self):
         '''@NTAPI-程序后台唤起1'''
         para=self.commonpara.copy()
-        request=APItest()
+        request=APItest('NO_PROXY')
         request.setDomain('toffee.app.test.tvfanqie.com')
         request.setUri('/iphone/common/online')
         request.initHeader(self.headers)

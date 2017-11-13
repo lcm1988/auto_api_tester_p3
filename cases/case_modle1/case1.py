@@ -19,7 +19,7 @@ class case_device1(unittest.TestCase):
         self.end_time=time.time()
         print('@耗时%d'%int((self.end_time-self.start_time)*1000))
 
-    @decorator(SmokeTest=False)
+    @decorator(SmokeTest=True)
     def test_iphone_restart1(self):
         '''@NTAPI-程序后台唤起1'''
         para=self.commonpara.copy()
