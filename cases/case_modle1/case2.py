@@ -36,18 +36,8 @@ class case_device2(unittest.TestCase):
             "msg": "ok",
             "data": {}
         }
-        return expect_json,request.run()
+        return request.run(expect_json)
 
-    @decorator(SmokeTest=False)
-    def test_iphone_restart2(self):
-        '''@NTAPI-程序后台唤起2'''
-        b=self.test_iphone_restart1(func_data=True)[1]
-        expect_json={
-            "error": 0,
-            "msg": "ok",
-            "data": {}
-        }
-        return expect_json,b
 
 if __name__=="__main__":
     unittest.main()

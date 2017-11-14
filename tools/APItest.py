@@ -2,6 +2,7 @@
 from json import loads
 from urllib.parse import urlencode
 from tools.HttpConnector import HttpConnector
+from tools.JsonCompare import JsonCompare
 from tools.Conf import Conf
 
 class APItest():
@@ -71,7 +72,7 @@ class APItest():
         return url
 
     #执行测试
-    def run(self):
+    def run(self,expect_json):
         req=HttpConnector()
         #检测代理配置
         proxy=self.__proxy if self.__proxy else Conf().get_conf('config.PROXY_URL')
@@ -83,8 +84,9 @@ class APItest():
                 res=req.conn(url=url,method=self.__method,body=self.__body,header=self.__header)
             else:
                 res=req.conn(url=url,method=self.__method,header=self.__header)
-            res=loads(res)
-            return res
+            req_res=loads(res)
+            cmp_res=JsonCompare(expect_json,req_res,is_debug=False)
+            return cmp_res,req_res
         except Exception as e:
             print(e)
             return 'err'
@@ -92,7 +94,8 @@ class APItest():
 if __name__ == "__main__":
     from tools.ResultDecorator import decorator
     from urllib.parse import urlencode
-    @decorator
+
+    @decorator(SmokeTest=False)
     def test():
         test=APItest()
         param={
@@ -110,14 +113,15 @@ if __name__ == "__main__":
             'flag': '1'
         }
         expect_json={
-            'error': 0,
+            'error': 1,
             'msg': "ok1",
             'data': {}
         }
         test.setDomain('toffee.app.test.tvfanqie.com')
         test.setUri('/android/common/online')
         test.initParam(param)
-        return expect_json,test.run()
+        return test.run(expect_json)
 
     test()
+    #print(test(func_data=True))
 

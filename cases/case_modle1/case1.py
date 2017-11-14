@@ -34,18 +34,23 @@ class case_device1(unittest.TestCase):
             "msg": "ok1",
             "data": {}
         }
-        return expect_json,request.run()
+        return request.run(expect_json)
 
     @decorator(SmokeTest=False)
     def test_iphone_restart2(self):
         '''@NTAPI-程序后台唤起2'''
-        b=self.test_iphone_restart1(func_data=True)[1]
-        expect_json={
-            "error": 0,
-            "msg": "ok",
-            "data": {}
-        }
-        return expect_json,b
+        para=self.commonpara.copy()
+        request=APItest()
+        request.setDomain('toffee.app.test.tvfanqie.com')
+        request.setUri('/iphone/common/online')
+        request.initHeader(self.headers)
+        request.initParam(para)
+        request.setParam('flag',2)
+
+        #引用其他case的接口返回数据
+        expect_json=self.test_iphone_restart1(func_data=True)
+
+        return request.run(expect_json)
 
 if __name__=="__main__":
     unittest.main()

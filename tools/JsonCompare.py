@@ -1,10 +1,9 @@
 #!/usr/bin/python3.5
 #coding:utf-8
-from conf.config import IS_DEBUG
 
 #数据对比，根据数据结构递归对比
 class JsonCompare():
-    def __init__(self,expect_data,real_data,is_debug=IS_DEBUG):
+    def __init__(self,expect_data,real_data,is_debug=False):
         self.expect_data=expect_data
         self.real_data=real_data
         self.data_compare_result=[]#数据对比结果
