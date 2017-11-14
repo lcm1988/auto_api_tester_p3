@@ -4,11 +4,11 @@
 def decorator(SmokeTest):
     def getfunc(fun):
         def runtest(*args,**kwargs):
-            comment=fun.__doc__ if fun.__doc__ else fun.__name__
-            if kwargs.get('func_data',False)==True:return fun(*args)[1]#检测func_data=True时只返回接口数据
-
-            print('%s RESULT OF "%s" %s'%('#'*10,comment,'#'*10))
             cmp_res,req_res= fun(*args)
+            if kwargs.get('func_data',False)==True:return req_res#检测func_data=True时只返回接口数据
+
+            comment=fun.__doc__ if fun.__doc__ else fun.__name__
+            print('%s RESULT OF "%s" %s'%('#'*10,comment,'#'*10))
             if SmokeTest:
                 print('执行冒烟测试。。。')
                 for i in cmp_res.frame_cmpare_result:print(i)#打印结构异常
