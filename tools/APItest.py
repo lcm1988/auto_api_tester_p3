@@ -72,7 +72,7 @@ class APItest():
         return url
 
     #执行测试
-    def run(self,expect_json):
+    def run(self):
         req=HttpConnector()
         #检测代理配置
         proxy=self.__proxy if self.__proxy else Conf().get_conf('config.PROXY_URL')
@@ -84,9 +84,7 @@ class APItest():
                 res=req.conn(url=url,method=self.__method,body=self.__body,header=self.__header)
             else:
                 res=req.conn(url=url,method=self.__method,header=self.__header)
-            req_res=loads(res)
-            cmp_res=JsonCompare(expect_json,req_res,is_debug=False)
-            return cmp_res,req_res
+            return loads(res)
         except Exception as e:
             print(e)
             return 'err'
@@ -120,7 +118,7 @@ if __name__ == "__main__":
         test.setDomain('toffee.app.test.tvfanqie.com')
         test.setUri('/android/common/online')
         test.initParam(param)
-        return test.run(expect_json)
+        return expect_json,test.run()
 
     test()
     #print(test(func_data=True))

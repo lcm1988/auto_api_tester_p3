@@ -1,12 +1,14 @@
 #!/usr/bin/python3.5
 #coding:utf-8
+from tools.JsonCompare import JsonCompare
 
 def decorator(SmokeTest):
     def getfunc(fun):
         def runtest(*args,**kwargs):
-            cmp_res,req_res= fun(*args)
+            expect_data,req_res= fun(*args)
             if kwargs.get('func_data',False)==True:return req_res#检测func_data=True时只返回接口数据
 
+            cmp_res=JsonCompare(expect_data,req_res,is_debug=False)
             comment=fun.__doc__ if fun.__doc__ else fun.__name__
             print('%s RESULT OF "%s" %s'%('#'*10,comment,'#'*10))
             if SmokeTest:

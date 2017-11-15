@@ -36,7 +36,7 @@ class case_device2(unittest.TestCase):
             "msg": "ok",
             "data": {}
         }
-        return request.run(expect_json)
+        return expect_json,request.run()
 
 if __name__=="__main__":
     unittest.main()

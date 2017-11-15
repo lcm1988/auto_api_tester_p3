@@ -34,7 +34,7 @@ class case_device1(unittest.TestCase):
             "msg": "ok1",
             "data": {}
         }
-        return request.run(expect_json)
+        return expect_json,request.run()
 
     @decorator(SmokeTest=False)
     def test_iphone_restart2(self):
@@ -50,7 +50,7 @@ class case_device1(unittest.TestCase):
         #引用其他case的接口返回数据
         expect_json=self.test_iphone_restart1(func_data=True)
 
-        return request.run(expect_json)
+        return expect_json,request.run()
 
 if __name__=="__main__":
     unittest.main()
