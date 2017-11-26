@@ -13,8 +13,8 @@ RUN_MODULES=['case_modle']
 RUN_CLASSES=['case_device']
 RUN_CASES=['test_iphone_restart1','test_iphone_restart2']
 
-#代理配置
-PROXY_URL='http://192.168.52.1:8888/'
+#代理配置,例http://192.168.52.1:8888/
+PROXY_URL=''
 
 #邮箱配置
 RECIEVER_LIST= ['516315002@qq.com','*****@163.com']
