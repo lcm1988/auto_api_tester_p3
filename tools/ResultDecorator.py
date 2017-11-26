@@ -2,14 +2,19 @@
 #coding:utf-8
 from tools.JsonCompare import JsonCompare
 
-def decorator(SmokeTest):
-    def getfunc(fun):
+def APIdecorator(SmokeTest=False):
+    def getfunc(func):
         def runtest(*args,**kwargs):
-            expect_data,req_res= fun(*args)
+            expect_data,req_res= func(*args)
             if kwargs.get('func_data',False)==True:return req_res#检测func_data=True时只返回接口数据
 
+            #print(dir(func))
+            #后期可以根据以下两个参数拿到配置好的借口预期返回值，case可以只配置apitest类的参数和调用
+            #print(func.__name__)#方法名
+            #print(func.__module__)#方法所在文件名
+
             cmp_res=JsonCompare(expect_data,req_res,is_debug=False)
-            comment=fun.__doc__ if fun.__doc__ else fun.__name__
+            comment=func.__doc__ if func.__doc__ else func.__name__
             print('%s RESULT OF "%s" %s'%('#'*10,comment,'#'*10))
             if SmokeTest:
                 print('执行冒烟测试。。。')
@@ -24,10 +29,11 @@ def decorator(SmokeTest):
         return runtest
     return getfunc
 
-@decorator(1)
+@APIdecorator(1)
 def myfunc():
     return 1,1
 
 if __name__=="__main__":
     print(myfunc(func_data=True))#返回原方法结果
+    myfunc()
 

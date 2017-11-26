@@ -2,16 +2,16 @@
 #coding:utf-8
 import time
 import unittest
-from conf import config
-from tools.ResultDecorator import decorator
+from tools.ResultDecorator import APIdecorator
 from tools.APItest import APItest
+from tools.Conf import Conf
 
 class case_device1(unittest.TestCase):
     #定义初始数据方法
     def setUp(self):
-        self.commonpara= config.COMMON_PARA.copy()
+        self.commonpara= Conf().get_conf('config.COMMON_PARA').copy()
         #定义请求头
-        self.headers= config.NT_HEADER.copy()
+        self.headers= Conf().get_conf('config.NT_HEADER').copy()
         self.start_time=time.time()
 
     #收尾方法，统计接口耗时
@@ -19,12 +19,12 @@ class case_device1(unittest.TestCase):
         self.end_time=time.time()
         print('@耗时%d'%int((self.end_time-self.start_time)*1000))
 
-    @decorator(SmokeTest=True)
+    @APIdecorator(SmokeTest=True)
     def test_iphone_restart1(self):
         '''@NTAPI-程序后台唤起1'''
         para=self.commonpara.copy()
         request=APItest()
-        request.setDomain('toffee.app.test.tvfanqie.com')
+        request.setDomain('toffee.app.tvfanqie.com')
         request.setUri('/iphone/common/online')
         request.initHeader(self.headers)
         request.initParam(para)
@@ -36,12 +36,12 @@ class case_device1(unittest.TestCase):
         }
         return expect_json,request.run()
 
-    @decorator(SmokeTest=False)
+    @APIdecorator(SmokeTest=False)
     def test_iphone_restart2(self):
         '''@NTAPI-程序后台唤起2'''
         para=self.commonpara.copy()
         request=APItest()
-        request.setDomain('toffee.app.test.tvfanqie.com')
+        request.setDomain('toffee.app.tvfanqie.com')
         request.setUri('/iphone/common/online')
         request.initHeader(self.headers)
         request.initParam(para)

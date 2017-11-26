@@ -1,11 +1,11 @@
 #!/usr/bin/python3.5
 #coding:utf-8
 import redis
-import conf.config as config
+from tools.Conf import Conf
 
 class RedisConnector():
     def __init__(self,rds_conf):
-        conf=getattr(config,rds_conf)
+        conf=Conf().get_conf('config.%s'%rds_conf)
         self.__rds=redis.Redis(connection_pool=redis.ConnectionPool(host=conf['HOST'],port=conf['PORT'],password=conf['AUTH'],))
 
     @property
