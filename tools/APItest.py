@@ -1,13 +1,9 @@
 #coding:utf-8
 from json import loads
-from urllib.parse import urlencode
 from tools.HttpConnector import HttpConnector
-from tools.JsonCompare import JsonCompare
-from tools.Conf import Conf
 
 class APItest():
     def __init__(self,proxy_url=''):
-        self.__proxy=proxy_url
         self.__protocol='http'
         self.__method='GET'
         self.__domain=''
@@ -16,6 +12,7 @@ class APItest():
         self.__body=''
         self.__field=[]
         self.__header={}
+        self.__h=HttpConnector(proxy_url) if proxy_url else HttpConnector()
 
     #设置协议：http or https
     def setProtocol(self, protocol='http'):
@@ -66,6 +63,7 @@ class APItest():
     #生成url
     def __makeUrl(self):
         if self.__param:
+            from urllib.parse import urlencode
             url='%s://%s%s?%s'%(self.__protocol,self.__domain,self.__uri,urlencode(self.__param))
         else:
             url='%s://%s/%s'%(self.__protocol,self.__domain,self.__uri)
@@ -73,17 +71,12 @@ class APItest():
 
     #执行测试
     def run(self):
-        req=HttpConnector()
-        #检测代理配置
-        proxy=self.__proxy if self.__proxy else Conf().get_conf('config.PROXY_URL')
-        if proxy:
-            req=HttpConnector(proxy)
         try:
             url=self.__makeUrl()
             if self.__body:
-                res=req.conn(url=url,method=self.__method,body=self.__body,header=self.__header)
+                res=self.__h.conn(url=url,method=self.__method,body=self.__body,header=self.__header)
             else:
-                res=req.conn(url=url,method=self.__method,header=self.__header)
+                res=self.__h.conn(url=url,method=self.__method,header=self.__header)
             return loads(res)
         except Exception as e:
             print(e)
@@ -115,7 +108,7 @@ if __name__ == "__main__":
             'msg': "ok1",
             'data': {}
         }
-        test.setDomain('toffee.app.test.tvfanqie.com')
+        test.setDomain('toffee.app.tvfanqie.com')
         test.setUri('/android/common/online')
         test.initParam(param)
         return expect_json,test.run()
