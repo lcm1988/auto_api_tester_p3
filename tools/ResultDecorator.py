@@ -1,21 +1,29 @@
 #!/usr/bin/python3.5
 #coding:utf-8
 from tools.JsonCompare import JsonCompare
+from tools.ExpectJson import Get_Expect
 
-def APIdecorator(SmokeTest=False):
-    def getfunc(func):
+def APIdecorator(SmokeTest):
+    def getfunc(fun):
         def runtest(*args,**kwargs):
-            expect_data,req_res= func(*args)
+            req_res = fun(*args)
             if kwargs.get('func_data',False)==True:return req_res#检测func_data=True时只返回接口数据
 
-            #print(dir(func))
-            #后期可以根据以下两个参数拿到配置好的借口预期返回值，case可以只配置apitest类的参数和调用
-            #print(func.__name__)#方法名
-            #print(func.__module__)#方法所在文件名
+            #fun.__module__: 函数所在类; fun.__name__: 函数所在类; fun.__doc__: 函数说明;
+            comment=fun.__doc__ if fun.__doc__ else fun.__name__
 
-            cmp_res=JsonCompare(expect_data,req_res,is_debug=False)
-            comment=func.__doc__ if func.__doc__ else func.__name__
+            #增加接口调试判断，调试情况下req_res会获取到两个值
+            if isinstance(req_res,tuple) and len(req_res)==2:
+                expect_json,req_res=req_res[0],req_res[1]
+            else:
+                expect_json=Get_Expect(fun.__module__,fun.__name__).expect_json
+
+            if req_res=='request or jsonencode err':
+                print('接口数据获取异常')
+                raise ConnectionError('未得到预期格式结果')
+
             print('%s RESULT OF "%s" %s'%('#'*10,comment,'#'*10))
+            cmp_res=JsonCompare(expect_json,req_res,is_debug=False)
             if SmokeTest:
                 print('执行冒烟测试。。。')
                 for i in cmp_res.frame_cmpare_result:print(i)#打印结构异常
@@ -31,9 +39,11 @@ def APIdecorator(SmokeTest=False):
 
 @APIdecorator(1)
 def myfunc():
-    return 1,1
+    return 1,2
 
 if __name__=="__main__":
-    print(myfunc(func_data=True))#返回原方法结果
     myfunc()
-
+    print(myfunc(func_data=True))#返回原方法结果
+    a=myfunc(func_data=True)
+    b,a=a[0],a[1]
+    print(b,a)

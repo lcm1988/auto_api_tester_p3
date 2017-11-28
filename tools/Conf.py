@@ -12,5 +12,5 @@ class Conf():
         return getattr(args,key)
 
 if __name__=="__main__":
-    conf=Conf('qa').get_conf('config.USE_PROXY')
+    conf=Conf('qa').get_conf('config.PROXY_URL')
     print(conf)

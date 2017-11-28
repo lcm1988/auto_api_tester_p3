@@ -3,7 +3,7 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from conf.config import RECIEVER_LIST,SMTP_SERVER,EMAIL_NAME,EMAIL_PWD
+from conf.qa.config import RECIEVER_LIST,SMTP_SERVER,EMAIL_NAME,EMAIL_PWD
 
 class ResultCollector():
     def __init__(self,fpath):

@@ -29,12 +29,7 @@ class case_device1(unittest.TestCase):
         request.initHeader(self.headers)
         request.initParam(para)
         request.setParam('flag',2)
-        expect_json={
-            "error": 0,
-            "msg": "ok1",
-            "data": {}
-        }
-        return expect_json,request.run()
+        return request.run()
 
 
 if __name__=="__main__":

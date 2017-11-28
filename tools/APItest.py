@@ -62,8 +62,8 @@ class APItest():
 
     #生成url
     def __makeUrl(self):
+        from urllib.parse import urlencode
         if self.__param:
-            from urllib.parse import urlencode
             url='%s://%s%s?%s'%(self.__protocol,self.__domain,self.__uri,urlencode(self.__param))
         else:
             url='%s://%s/%s'%(self.__protocol,self.__domain,self.__uri)
@@ -73,14 +73,15 @@ class APItest():
     def run(self):
         try:
             url=self.__makeUrl()
+            print('@地址',self.__uri)
             if self.__body:
                 res=self.__h.conn(url=url,method=self.__method,body=self.__body,header=self.__header)
             else:
                 res=self.__h.conn(url=url,method=self.__method,header=self.__header)
-            return loads(res)
+            return loads(res)#非json类接口可以在该处改造
         except Exception as e:
             print(e)
-            return 'err'
+            return 'request or jsonencode err'
 
 if __name__ == "__main__":
     from tools.ResultDecorator import decorator
@@ -108,7 +109,7 @@ if __name__ == "__main__":
             'msg': "ok1",
             'data': {}
         }
-        test.setDomain('toffee.app.tvfanqie.com')
+        test.setDomain('toffee.app.test.tvfanqie.com')
         test.setUri('/android/common/online')
         test.initParam(param)
         return expect_json,test.run()
