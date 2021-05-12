@@ -1,0 +1,124 @@
+# coding:utf-8
+import re
+from copy import deepcopy
+from json import dumps
+
+
+# 数据对比，根据数据结构递归对比
+class JsonCompare:
+    def __init__(self, expect_data, real_data, is_debug=False):
+        self.expect_data = expect_data
+        self.real_data = real_data
+        self.data_compare_result = []  # 数据对比结果
+        self.frame_compare_result = []  # 结构对比结果
+        self.default_root = '$'
+        self.compare(expect_data, real_data, self.default_root)
+        if is_debug:
+            for i in self.data_compare_result: print(i)
+            for i in self.frame_compare_result: print(i)
+
+    @property
+    def data_error(self):
+        return len(self.data_compare_result) > 0
+
+    @property
+    def frame_error(self):
+        return len(self.frame_compare_result) > 0
+
+    def get_data_result(self):
+        return self.data_compare_result
+
+    def get_frame_result(self):
+        return self.frame_compare_result
+
+    def compare(self, expect_data, real_data, path='/'):
+        try:
+            if not isinstance(expect_data, (list, tuple, dict)):
+                # if isinstance(real_data,unicode):real_data=real_data.encode('utf-8')
+
+                # 如果都是字符串类型，判断预期值是否启用正则标志 REMATCH:
+                if str(expect_data)[:8] == 'REMATCH:' and isinstance(real_data, str):
+                    if not re.match(expect_data[8:],real_data):
+                        msg = '%s:预期值正则表达式:%s,实际值:%s%s' % (path, str(expect_data[8:]), str(real_data), type(real_data))
+                        self.data_compare_result.append(msg)
+                # 其他情况
+                elif not expect_data == real_data:
+                    msg = '%s:预期值:%s%s,实际值:%s%s' % (path, str(expect_data), type(expect_data), str(real_data), type(real_data))
+                    self.data_compare_result.append(msg)
+            elif isinstance(expect_data, (list, tuple)):  # list,tuple
+                if not isinstance(real_data, (list, tuple)):
+                    raise IndexError('实际数据不是list:%s' % path)  # 实际数据为非list/tuple类型
+                for index, value in enumerate(expect_data):
+                    try:
+                        cursor_path = '%s[%d]' % (path, index)
+                        if index < len(real_data):
+                            self.compare(value, real_data[index], cursor_path)
+                        else:
+                            raise IndexError('不存在的下标：%s，预期值：%s' % (cursor_path, dumps(value, ensure_ascii=False)))
+                    except Exception as e:
+                        if IndexError:
+                            self.frame_compare_result.append('结构异常or数据缺失:%s' % e.args)
+                        else:
+                            self.frame_compare_result.append('未知异常:%s' % e.args)
+            else:  # dict
+                if not isinstance(real_data, dict):
+                    raise IndexError('实际数据不是dict:%s' % path)  # 实际数据为非dict类型
+                for key,value in expect_data.items():
+                    try:
+                        cursor_path = '%s.%s' % (path, str(key))
+                        if key in real_data.keys():
+                            self.compare(value, real_data[key], cursor_path)
+                        else:
+                            raise IndexError('不存在的键：%s, 预期值：%s' % (cursor_path, dumps(value, ensure_ascii=False)))
+                    except Exception as e:
+                        if IndexError:
+                            self.frame_compare_result.append('结构异常or数据缺失:%s' % e.args)
+                        else:
+                            self.frame_compare_result.append('未知异常:%s' % e.args)
+        except Exception as e:
+            self.frame_compare_result.append('未知异常:%s' % e.args)
+
+    @staticmethod
+    def frame(js, def_val=None):
+        """
+        该方法可以抽出json结构，值可以通过def_val设置
+        递归思路：
+            1，非字典，列表，则直接格式化值为特定字段
+            2，列表，按1规则递归检查
+            3，字典，按1规则递归检查
+        :param js: 原json数据
+        :param def_val: 如果遇到非list、dict类型的数据，用该参数替换
+        :return: 和js结构相同的json数据
+        """
+        if not isinstance(js, (list, dict)):
+            return def_val
+        elif isinstance(js, list):
+            cjs = deepcopy(js)
+            for idx, val in enumerate(cjs):
+                cjs[idx] = JsonCompare.frame(val, def_val)
+            return cjs
+        else:
+            cjs = deepcopy(js)
+            for k, v in cjs.items():
+                cjs[k] = JsonCompare.frame(v, def_val)
+            return cjs
+
+
+if __name__ == "__main__":
+    a = {'a': 123, 'b': [1, {'c': 'REMATCH:^123abc', 'd': 123}, 1]}
+    b = {'a': 1234, 'b': [1, {'c': '123abcdefg'}]}
+    res = JsonCompare(a, b, is_debug=False)
+
+    for i in res.frame_compare_result:
+        print('结构异常：', i)
+    for i in res.data_compare_result:
+        print('数据异常：', i)
+
+
+
+
+
+
+
+
+
